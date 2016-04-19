@@ -1,13 +1,12 @@
-/**
- * Created by rd-hc on 17/03/16.
- */
+
 var express = require('express');
 var router = express.Router();
+var app = express();
 
 
 router.route('/')
     .get(function(request, response){
-        response.json({'get':true});
+        response.render('index', { title : 'Home' });
     })
     .post(function(request, response){
         response.json({'post':true});

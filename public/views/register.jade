@@ -1,0 +1,19 @@
+//
+   Created by rd-hc on 14/04/16.
+
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        link(rel="stylesheet" href="/main.css" type="text/css")
+        script(src='/bower_components/jquery/dist/jquery.js')
+        title Winter
+    body
+        div(class="body")
+            div(class="user-div")
+                form(id='name_panel', class="login-div", class="snow-border",method="post",action="register/new")
+                    h1 Register
+                    input(placeholder='user',  name="username" type="text", class="snow-border")
+                    input(placeholder='password', name="password", type="text", class="snow-border")
+                    input(class="snow-border", type="submit")
+        a(href='signin') Login
