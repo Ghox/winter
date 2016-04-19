@@ -113,6 +113,9 @@ input[type=checkbox], label[for=newsletter]{
     width: 200px;
 
 }
+#create_btn{
+    width: 100%;
+}
 
 #messages{
     background-color: white; 

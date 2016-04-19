@@ -28,8 +28,10 @@ html
 					aside(id="group_area",class="snow-border")
 						h1(for="groups") Groups
 						ul(id="groups")
+						input(id="group_name", class="snow-border", type="text")
+						button(id="create_btn", class="alert-success snow-border") Create group
 					div(id="chat",class="chat-area snow-border")
-						h1(for="messages") Chat
+						h1(for="messages" id='chat_lbl') Chat
 						ul(id="messages" class="snow-border")
 						div
 							input(type="text", id="message_input")

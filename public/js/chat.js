@@ -24,17 +24,15 @@ $(document).ready(function () {
             groups.forEach(function (group) {
                 groupList += '<li class="group snow-border" id="group-' + group._id + '">' + group.name + '</li>';
             });
-            groupList += '<li><input id="group_name" class="snow-border" type="text"></li>';
-            groupList += '<li id="create_btn" class="alert-success snow-border">Create Group</li>';
 
             $('#groups').html(groupList);
-
             $(".group").click(function selectGroup() {
                 var selectedGroupId = $(this).attr('id').split('group-')[1];
                 $.ajax({
                     url: "http://localhost:3000/group/" + selectedGroupId
                 }).done(function (group) {
                     selectedGroup = group;
+                    $('#chat_lbl').text(group.name + ' Chat');
                     loadChat(selectedGroup.chat);
                 });
             });
