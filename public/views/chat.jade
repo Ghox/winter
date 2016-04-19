@@ -1,0 +1,46 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		link(rel="stylesheet" href="/main.css" type="text/css")
+		script(src='/socket.io/socket.io.js')
+		script(src='/bower_components/jquery/dist/jquery.js')
+		script(src='/js/chat.js')
+		title Winter
+	body
+		div(class="body")
+			div(class="user-div")
+				div(id='name_panel', class="login-div", class="snow-border")
+					h1 What's your name?
+					input(placeholder='message', id='name_input', type="text", class="snow-border")
+					button(id='name_btn', class="snow-border") Send	
+
+				div(id="chat_panel", hidden, class="snow-border")
+					h1(for="chat", class="") Chat
+					div(id="chat",class="chat-area snow-border")
+						ul(id="messages")
+						div
+							input(type="text", id="message_input")
+							button(id='chat_btn', class="snow-border") Send	
+
+				aside
+					h1(for="chat", class="chat") Chat
+					div(id="chat",class="chat-area snow-border")
+						ul(id="messages")
+						div
+							input(type="text", id="message_input")
+							button(id='chat_btn', class="snow-border") Send	
+
+
+
+				input(type="file", hidden)
+				
+				ul(class="photos", hidden)
+					li
+						img(src="/images/snow.png", alt="Magic Cake Photo")
+					li
+						img(src="/images/snow.png", alt="Magic Cake Photo")
+					li
+						img(src="/images/snow.png", alt="Magic Cake Photo")
+
+

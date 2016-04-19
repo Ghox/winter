@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="main.css" type="text/css"/>
+    <title> Comments </title>
+</head>
+<body>
+
+<div class="body">
+    <form class="user-form">
+        <label>Comments</label>
+        <input type="text">
+
+        <!-- common form input types-->
+        <input type="file">
+
+        <!--
+            The for and id attributes
+            The value of the for attribute in the label shoyul be the same as the value of the id attribute in an input field to associete the label and input.
+            Each for/id pair has to be unique on the page.
+         -->
+        <label for="recipe"> Recipe </label>
+        <input type="text" id="recipe">
+
+
+        <!--
+           Using a textarea instead of an input
+           input tags should be used for short or single-line user input
+           The textarea tag is used for multi-line user input.
+         -->
+        <label for="ingredients">Ingredients</label>
+        <textarea id="ingredients"> </textarea>
+
+        <h3> Your Photos</h3>
+        <ul class="photos">
+            <li><img src="images/snow.png" alt="Magic Cake Photo"></li>
+            <li><img src="images/snow.png" alt="Magic Cake Photo"></li>
+            <li><img src="images/snow.png" alt="Magic Cake Photo"></li>
+        </ul>
+
+
+    </form>
+</div>
+</body>
+</html>
