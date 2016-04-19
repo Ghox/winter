@@ -49,11 +49,20 @@ function message(message, callback) {
 
         });
 }
+function newGroup(request, response){
+    var params = request.query;
+    var group = new model({name:params.name, chat:[]});
+    group.save(function(error, document){
+        response.send(document.toJSON());
+    });
+
+}
 
 var controller = {
     groups: groups,
     group: group,
-    message: message
+    message: message,
+    new:newGroup
 };
 
 module.exports = controller;

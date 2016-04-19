@@ -6,7 +6,8 @@ var router = express.Router();
 //controller.test();
 
 router.route('/')
-    .get(controller.groups);
+    .get(controller.groups)
+    .post(controller.new);
 
 router.route('/:id')
     .get(controller.group);

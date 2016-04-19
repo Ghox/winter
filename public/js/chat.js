@@ -24,7 +24,9 @@ $(document).ready(function () {
             groups.forEach(function (group) {
                 groupList += '<li class="group snow-border" id="group-' + group._id + '">' + group.name + '</li>';
             });
-            groupList += '<li class="alert-success snow-border">Create Group</li>';
+            groupList += '<li><input id="group_name" class="snow-border" type="text"></li>';
+            groupList += '<li id="create_btn" class="alert-success snow-border">Create Group</li>';
+
             $('#groups').html(groupList);
 
             $(".group").click(function selectGroup() {
@@ -36,7 +38,25 @@ $(document).ready(function () {
                     loadChat(selectedGroup.chat);
                 });
             });
+            $('#create_btn').click(function () {
+                var name = $("#group_name").val();
+                createGroup(name);
+            });
         });
+    }
+
+    function addGroup(group){
+
+        $('#groups').append('<li class="group snow-border" id="group-' + group._id + '">' + group.name + '</li>');
+
+    }
+
+    function createGroup(name){
+        $.ajax({
+            url: "http://localhost:3000/group/?name="+name,
+            type: 'POST'
+
+        }).done(addGroup);
     }
 
     $("#logout_a").click(function logout() {
@@ -46,9 +66,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#create_btn').click(function () {
 
-    });
 
     $('#chat_btn').click(function sendMessage(e) {
         var data = $('#message_input').val();
