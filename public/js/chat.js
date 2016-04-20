@@ -5,6 +5,7 @@ $(document).ready(function () {
     var name = '';
     var server = io.connect('http://localhost:3000');
     var selectedGroup = {};
+    var groupList = [];
 
 
     server.on('message', function (message, groupId) {
@@ -12,7 +13,7 @@ $(document).ready(function () {
             $('#messages').append('<li><span>' + message + '</span></li>');
         }
         else{
-            console.log('new message in another group');
+            $('#group-'+groupId).append('<li class="group snow-border">' + 'new message' + '</li>');
         }
     });
 
@@ -30,27 +31,32 @@ $(document).ready(function () {
         $.ajax({
             url: "http://localhost:3000/group",
         }).done(function (groups) {
-            var groupList = '';
+            groupList = groups;
+            var groupsHtml = '';
             groups.forEach(function (group) {
-                groupList += '<li class="group snow-border" id="group-' + group._id + '">' + group.name + '</li>';
+                groupsHtml += '<li class="group snow-border" id="group-' + group._id + '">' + group.name + '</li>';
             });
 
-            $('#groups').html(groupList);
-            $(".group").click(function selectGroup() {
-                var selectedGroupId = $(this).attr('id').split('group-')[1];
-                $.ajax({
-                    url: "http://localhost:3000/group/" + selectedGroupId
-                }).done(function (group) {
-                    selectedGroup = group;
-                    $('#chat_lbl').text(group.name + ' Chat');
-                    loadChat(selectedGroup.chat);
-                    var username = getCookie('username');
-                    server.emit('join', username, group._id);
-                });
-            });
+            $('#groups').html(groupsHtml);
+
             $('#create_btn').click(function () {
                 var name = $("#group_name").val();
                 createGroup(name);
+            });
+            setGroupEvents();
+        });
+    }
+    function setGroupEvents(){
+        $(".group").click(function selectGroup() {
+            var selectedGroupId = $(this).attr('id').split('group-')[1];
+            $.ajax({
+                url: "http://localhost:3000/group/" + selectedGroupId
+            }).done(function (group) {
+                selectedGroup = group;
+                $('#chat_lbl').text(group.name + ' Chat');
+                loadChat(selectedGroup.chat);
+                var username = getCookie('username');
+                server.emit('join', username, group._id);
             });
         });
     }
@@ -58,6 +64,7 @@ $(document).ready(function () {
     function addGroup(group){
 
         $('#groups').append('<li class="group snow-border" id="group-' + group._id + '">' + group.name + '</li>');
+        setGroupEvents();
 
     }
 
