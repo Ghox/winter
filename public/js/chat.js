@@ -1,9 +1,19 @@
 $(document).ready(function () {
+
+
+
     var name = '';
     var server = io.connect('http://localhost:3000');
     var selectedGroup = {};
-    server.on('message', function (message) {
-        $('#messages').append('<li><span>' + message + '</span></li>');
+
+
+    server.on('message', function (message, groupId) {
+        if(selectedGroup._id===groupId){
+            $('#messages').append('<li><span>' + message + '</span></li>');
+        }
+        else{
+            console.log('new message in another group');
+        }
     });
 
     function loadChat(chat) {
@@ -34,6 +44,8 @@ $(document).ready(function () {
                     selectedGroup = group;
                     $('#chat_lbl').text(group.name + ' Chat');
                     loadChat(selectedGroup.chat);
+                    var username = getCookie('username');
+                    server.emit('join', username, group._id);
                 });
             });
             $('#create_btn').click(function () {

@@ -20,7 +20,7 @@ var register = require('./routes/register');
 var home = require('./routes/home');
 
 //engine set
-app.set('views', 'public/views');
+app.set('views', 'views');
 app.set('view engine', 'jade');
 
 
