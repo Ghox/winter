@@ -1,8 +1,6 @@
 
 $(document).ready(function(){
 
-
-
 	$('#login_btn').click(function(){
 		var user = $('#user_input').val();
 		var password = $('#password_input').val();

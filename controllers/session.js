@@ -30,7 +30,6 @@ function login(request, response){
 				}else{
 					response.redirect('/signin');
 				}
-
 			});
 
 }

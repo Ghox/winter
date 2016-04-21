@@ -43,7 +43,7 @@ app.use('/home', home);
 app.use('/group', group);
 
 var server  = app.listen(3000);
-var io = require('./controllers/socket.js')(server);
+var io = require('./socket/socket.js')(server);
 
 
 

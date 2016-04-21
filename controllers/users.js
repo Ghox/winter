@@ -14,8 +14,6 @@ function newUser(request, response){
     var params = request.body;
     var user = new model({username:params.username, password:params.password});
     user.save(function(error, document){
-        console.log(document);
-        console.log(error);
         response.redirect('/');
     });
 }
