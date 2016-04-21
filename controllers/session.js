@@ -1,5 +1,5 @@
 'use strict';
-
+var jwt = require('jsonwebtoken');
 var userModel = require('../models/user');
 
 function init(request, response){
@@ -10,26 +10,29 @@ function init(request, response){
 }
 
 function login(request, response){
-
-
 	var params = request.body;
 	userModel.findOne({'username':params.username})
 			.exec( function(err, document){
+				console.log('document',document);
 				if(document&&!err){
 					var user = document.toJSON();
+
 					if(user.password == params.password){
 						request.session.user = user;
-						//response.writeHead({'Set-Cookie': 'mycookie=test', 'Location':'/home'});
+						var token = jwt.sign(user, 'jwtSecret', { expiresInMinutes: 60*60 });
 						response.cookie('username', user.username);
-						response.redirect('/home');
+						response.json(token);
 						//response.end();
 					}else{
 						response.redirect('/signin');
 					}
+
 				}else{
 					response.redirect('/signin');
 				}
+
 			});
+
 }
 
 function logout(request, response){

@@ -10,10 +10,10 @@ html
 	body
 		div(class="body")
 			div(class="user-div")
-				form(id='name_panel', class="login-div", class="snow-border",method="post",action="log/login")
+				div(id='name_panel', class="login-div", class="snow-border")
 					h1 Login
-					input(placeholder='user',  name="username" type="text", class="snow-border")
-					input(placeholder='password', name="password", type="text", class="snow-border")
-					input(class="snow-border", type="submit")
+					input(placeholder='user', id='user_input', name="username" type="text", class="snow-border")
+					input(placeholder='password', id="password_input", name="password", type="text", class="snow-border")
+					button(class="snow-border", id='login_btn') Login
 		a(href='register') Register
 

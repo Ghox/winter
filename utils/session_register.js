@@ -4,6 +4,7 @@ var myLogger = function (req, res, next) {
  console.log('query', req.query);
  console.log('params', req.params);
  console.log('path', req.path);
+ console.log('request', req);
   //console.log(req.session);
   //var sess = req.session;
   //if (sess.views) {

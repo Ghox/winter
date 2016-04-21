@@ -1,18 +1,30 @@
 
 $(document).ready(function(){
-	document.cookie="username=John Doe";
 
 
-	//$('#login_btn').click(function(){
-	//	var user = $('#user_input').val();
-	//	var password = $('#password_input').val();
-    //
-	//	$.ajax({
-	//			url: "http://localhost:3000/log/login",
-	//			data: { "user": user, "password": password },
-	//			type: 'POST'
-	//	}).done(function( response) {
-	//		window.location.href='/users';
-	//	  });
-	//});
+
+	$('#login_btn').click(function(){
+		var user = $('#user_input').val();
+		var password = $('#password_input').val();
+
+		$.ajax({
+				url: "http://localhost:3000/log/login",
+				data: { "username": user, "password": password },
+				type: 'POST'
+		}).done(function(token) {
+			localStorage.setItem("accessToken",token);
+			window.location.href='/home';
+		  });
+	});
 });
+
+
+//$('#login').submit(function (e) {
+//	e.preventDefault();
+//	$.post('/login', {
+//		username: $('username').val(),
+//		password: $('password').val()
+//	}).done(function (result) {
+//		connect_socket(result.token);
+//	});
+//});

@@ -3,17 +3,23 @@ $(document).ready(function () {
 
 
     var name = '';
-    var server = io.connect('http://localhost:3000');
+    //var server = io.connect('http://localhost:3000');
+    var token = localStorage.getItem("accessToken");
+    var server = socketio(token);
+
     var selectedGroup = {};
     var groupList = [];
 
-
+    if(!server){
+        alert('no se pudo conectar mamo, lo mas probable es que se porque su navegador es una basura');
+        logout();
+    }
     server.on('message', function (message, groupId) {
         if(selectedGroup._id===groupId){
             $('#messages').append('<li><span>' + message + '</span></li>');
         }
         else{
-            $('#group-'+groupId).append('<li class="group snow-border">' + 'new message' + '</li>');
+            $('#group-'+groupId).append('<i style="float:right" class="glyphicon glyphicon-fire fire"></i>');
         }
     });
 
@@ -76,13 +82,7 @@ $(document).ready(function () {
         }).done(addGroup);
     }
 
-    $("#logout_a").click(function logout() {
-        $.ajax({
-            url: "http://localhost:3000/log/logout",
-            type: 'POST'
-        });
-    });
-
+    $("#logout_a").click(logout);
 
 
     $('#chat_btn').click(function sendMessage(e) {
@@ -91,6 +91,17 @@ $(document).ready(function () {
         var message = {username: username, data: data, groupId: selectedGroup._id};
         server.emit('message', message);
     });
+
+    function logout() {
+        $.ajax({
+            url: "http://localhost:3000/log/logout",
+            type: 'POST'
+        }).done(function(){
+                window.location.href='/home';
+            }
+
+        );
+    }
 
     function getCookie(cookieName) {
         var name = cookieName + "=";

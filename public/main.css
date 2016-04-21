@@ -192,3 +192,8 @@ input[type=checkbox], label[for=newsletter]{
     margin: 10px;
     border: 3px solid #73AD21; 
 }
+
+.fire{
+    color:firebrick;
+    text-shadow:2px 2px 4px #000000;
+}

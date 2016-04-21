@@ -1,10 +1,15 @@
 
 
 module.exports = function (server) {
-        var groupsModel = require('../models/group');
+
+        var socketioJwt = require('socketio-jwt');
         var groupController = require('../controllers/group');
         var io = require('socket.io').listen(server);
-        var clients = {};
+
+        io.set('authorization', socketioJwt.authorize({
+            secret: 'jwtSecret',
+            handshake: true
+        }));
 
         io.on('connection', function (client) {
 
@@ -18,7 +23,6 @@ module.exports = function (server) {
                         client.emit('message', 'you' + ' : ' + message.data, message.groupId);
                         client.broadcast.to(message.groupId).broadcast.emit('message', message.username + ' : ' + message.data, message.groupId);
                         //client.broadcast.emit('message', message.username + ' : ' + message.data, groupId);
-
                     }
                 });
             });
@@ -37,7 +41,7 @@ module.exports = function (server) {
 
 
         });
-        io.clients = clients;
+
         return io;
 
 
