@@ -1,26 +1,36 @@
 $(document).ready(function () {
 
 
-
-    var name = '';
-    //var server = io.connect('http://localhost:3000');
     var token = localStorage.getItem("accessToken");
     var server = socketio(token);
 
     var selectedGroup = {};
     var groupList = [];
+    var receiver = '';
 
-    if(!server){
+    if (!server) {
         alert('no se pudo conectar mamo, lo mas probable es que se porque su navegador es una basura');
         logout();
     }
+
+    server.on('private_message', function(message){
+        console.log(message);
+        $('#messages').append('<li><span>' + message + '</span></li>');
+    });
+
     server.on('message', function (message, groupId) {
-        if(selectedGroup._id===groupId){
+        if (selectedGroup._id === groupId) {
             $('#messages').append('<li><span>' + message + '</span></li>');
         }
-        else{
-            $('#group-'+groupId).append('<i style="float:right" class="glyphicon glyphicon-fire fire"></i>');
+        else {
+            $('#group-' + groupId).append('<i style="float:right" class="glyphicon glyphicon-fire fire"></i>');
         }
+    });
+
+    server.on('users', function (users) {
+        var index = users.indexOf(getCookie('username'));
+        users.splice(index, 1);
+        addUsers(users)
     });
 
     function loadChat(chat) {
@@ -52,7 +62,20 @@ $(document).ready(function () {
             setGroupEvents();
         });
     }
-    function setGroupEvents(){
+
+    function addUsers(users) {
+        var usersHtml = '';
+        users.forEach(
+            function(user){
+            usersHtml += '<li class="user snow-border">' + user + '</li>';
+        });
+        $('#users').html(usersHtml);
+
+        setUserEvents();
+
+    }
+
+    function setGroupEvents() {
         $(".group").click(function selectGroup() {
             var selectedGroupId = $(this).attr('id').split('group-')[1];
             $.ajax({
@@ -67,16 +90,24 @@ $(document).ready(function () {
         });
     }
 
-    function addGroup(group){
+    function setUserEvents() {
+        $(".user").click(function selectUser() {
+            receiver = $(this).text();
+            $('#chat_lbl').text(receiver + ' Chat');
+            loadChat([]);
+        });
+    }
+
+    function addGroup(group) {
 
         $('#groups').append('<li class="group snow-border" id="group-' + group._id + '">' + group.name + '</li>');
         setGroupEvents();
 
     }
 
-    function createGroup(name){
+    function createGroup(name) {
         $.ajax({
-            url: "http://localhost:3000/group/?name="+name,
+            url: "http://localhost:3000/group/?name=" + name,
             type: 'POST'
 
         }).done(addGroup);
@@ -92,28 +123,21 @@ $(document).ready(function () {
         server.emit('message', message);
     });
 
+    $('#chat_btn_user').click(function sendMessage(e) {
+        var data = $('#message_input').val();
+        var username = getCookie('username');
+        var message = {sender: username, data: data, receiver:receiver};
+        server.emit('private_message', message);
+    });
+
     function logout() {
         $.ajax({
             url: "http://localhost:3000/log/logout",
             type: 'POST'
-        }).done(function(){
-                window.location.href='/home';
+        }).done(function () {
+                window.location.href = '/home';
             }
-
         );
-    }
-
-    function getCookie(cookieName) {
-        var name = cookieName + "=";
-        var cookieArray = document.cookie.split(';');
-        for (var i = 0; i < cookieArray.length; i++) {
-            var cookie = cookieArray[i];
-            while (cookie.charAt(0) == ' ') {
-                cookie = cookie.substring(1);
-            }
-            if (cookie.indexOf(name) == 0) return cookie.substring(name.length, cookie.length);
-        }
-        return "";
     }
 
     addGroups();

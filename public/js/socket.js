@@ -7,10 +7,13 @@
 
 var socketio = (function () {
     var socket;
-
+    var username = getCookie('username');
+    console.log(username);
     function createConnection(token){
         socket = io.connect('http://localhost:3000', {
-            query: 'token=' + token
+            query: 'token=' + token+'&username='+ username
+        }, function(){
+            console.log('connected');
         });
 
         socket
@@ -19,6 +22,9 @@ var socketio = (function () {
             })
             .on('disconnect', function () {
                 console.log('disconnected');
+            })
+            .on('error', function(err){
+                console.log('err', err);
             });
         return socket;
     }

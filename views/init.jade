@@ -7,6 +7,7 @@ html
 		script(src='/socket.io/socket.io.js')
 		script(src='/bower_components/jquery/dist/jquery.js')
 		script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+		script(src='/js/utils.js')
 		script(src='/js/socket.js')
 		script(src='/js/chat.js')
 		title Winter
@@ -37,3 +38,9 @@ html
 						div
 							input(type="text", id="message_input")
 							button(id='chat_btn', class="snow-border") Send
+							button(id='chat_btn_user', class="snow-border") Send User Message
+					aside(id="user_area",class="snow-border")
+						h1(for="users") Users
+						ul(id="users")
+
+

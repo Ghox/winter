@@ -13,7 +13,6 @@ function login(request, response){
 	var params = request.body;
 	userModel.findOne({'username':params.username})
 			.exec( function(err, document){
-				console.log('document',document);
 				if(document&&!err){
 					var user = document.toJSON();
 

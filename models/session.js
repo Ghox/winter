@@ -5,7 +5,6 @@ var defaultSession = require('../variables/session').defaultSession;
 
 
 function checkAuth (req, res, next) {
-	console.log('auth', req.session);
 
     if(req.session && req.session.user){
         next();
