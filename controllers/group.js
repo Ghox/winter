@@ -26,7 +26,6 @@ function group(request, response) {
         });
 }
 function message(message, callback) {
-    console.log(message.groupId);
     model.findById(message.groupId)
         .exec(function (err, group) {
             if (!err && group) {

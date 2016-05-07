@@ -7,13 +7,16 @@ $(document).ready(function () {
     var selectedGroup = {};
     var groupList = [];
     var receiver = '';
+    var myUser = getCookie('username');
+    var userList = [];
+    $('#username').html(myUser);
 
     if (!server) {
         alert('no se pudo conectar mamo, lo mas probable es que se porque su navegador es una basura');
         logout();
     }
 
-    server.on('private_message', function(message){
+    server.on('private_message', function (message) {
         console.log(message);
         $('#messages').append('<li><span>' + message + '</span></li>');
     });
@@ -28,9 +31,24 @@ $(document).ready(function () {
     });
 
     server.on('users', function (users) {
-        var index = users.indexOf(getCookie('username'));
+        var index = users.indexOf(myUser);
         users.splice(index, 1);
         addUsers(users)
+    });
+
+    server.on('connect_user', function (user) {
+        var index = userList.indexOf(user);
+        if (index === -1) {
+            addUser(user);
+        }
+    });
+
+    server.on('disconnect_user', function(user){
+        console.log('disconnect');
+        var index = userList.indexOf(user);
+        if (index !== -1) {
+            removeUser(index);
+        }
     });
 
     function loadChat(chat) {
@@ -64,16 +82,31 @@ $(document).ready(function () {
     }
 
     function addUsers(users) {
+        userList = users;
         var usersHtml = '';
         users.forEach(
-            function(user){
-            usersHtml += '<li class="user snow-border">' + user + '</li>';
-        });
+            function (user, index) {
+                console.log(index);
+                usersHtml += '<li id="user-'+index+'" class="user snow-border">' + user + '</li>';
+            });
         $('#users').html(usersHtml);
 
         setUserEvents();
-
     }
+
+    function addUser(user) {
+        var index = userList.length;
+        var userHtml = '<li id="user-'+index+'" class="user snow-border">' + user + '</li>';
+        userList.push(user);
+        $('#users').append(userHtml);
+        setUserEvents();
+    }
+
+    function removeUser(index){
+        $('#user-'+index).remove();
+        userList.splice(index, 1);
+    }
+
 
     function setGroupEvents() {
         $(".group").click(function selectGroup() {
@@ -84,8 +117,7 @@ $(document).ready(function () {
                 selectedGroup = group;
                 $('#chat_lbl').text(group.name + ' Chat');
                 loadChat(selectedGroup.chat);
-                var username = getCookie('username');
-                server.emit('join', username, group._id);
+                server.emit('join', myUser, group._id);
             });
         });
     }
@@ -118,15 +150,13 @@ $(document).ready(function () {
 
     $('#chat_btn').click(function sendMessage(e) {
         var data = $('#message_input').val();
-        var username = getCookie('username');
-        var message = {username: username, data: data, groupId: selectedGroup._id};
+        var message = {username: myUser, data: data, groupId: selectedGroup._id};
         server.emit('message', message);
     });
 
     $('#chat_btn_user').click(function sendMessage(e) {
         var data = $('#message_input').val();
-        var username = getCookie('username');
-        var message = {sender: username, data: data, receiver:receiver};
+        var message = {sender: myUser, data: data, receiver: receiver};
         server.emit('private_message', message);
     });
 
